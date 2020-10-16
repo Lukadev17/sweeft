@@ -1,0 +1,31 @@
+CREATE SEQUENCE teacher_id_seq START WITH 1000;
+CREATE TABLE teacher(
+    teacher_id int NOT NULL PRIMARY KEY,
+    firstname varchar(255),
+    lastname varchar(255),
+    sex varchar(255),
+    subject varchar(255)
+);
+
+CREATE SEQUENCE pupil_id_seq START WITH 1000;
+CREATE TABLE pupil(
+    pupil_id int NOT NULL PRIMARY KEY,
+    firstname varchar(255),
+    lastname varchar(255),
+    sex varchar(255),
+    grade int
+);
+
+CREATE TABLE teachers_pupils(
+    teacher_id int NOT NULL,
+    pupil_id int NOT NULL,
+    CONSTRAINT pk_teachers_pupils PRIMARY KEY(teacher_id, pupil_id),
+    CONSTRAINT fk_teacher FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id),
+    CONSTRAINT fk_pupil FOREIGN KEY (pupil_id) REFERENCES pupil(pupil_id)
+);
+
+SELECT DISTINCT(t.teacher_id),t.firstname,t.lastname
+FROM teacher t
+LEFT OUTER JOIN teachers_pupils tp ON t.teacher_id = tp.teacher_id
+LEFT OUTER JOIN pupil p ON tp.pupil_id = p.pupil_id
+WHERE p.firstname = 'Giorgi';
